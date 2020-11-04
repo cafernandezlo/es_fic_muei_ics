@@ -1,5 +1,6 @@
 ---
 title: "Informática como servicio"
+subtitle: "Plataforma como servicio (PaaS)"
 author: "Carlos Fernandez-Lozano"
 date: '`r format(Sys.Date(),"Última modificación: %e %b %Y")`'
 output:
@@ -11,15 +12,13 @@ output:
     toc: yes
 ---
 
-# Plataforma como Servicio (PaaS)
-
 Las plataformas como servicio o (PaaS) son un conjunto de servicios/aplicaciones basados en la nube que permite disponer de una capacidad de cálculo y almacenamiento (aparentemente) ilimitada. Obviamente el uso de dichos recursos suele tener un coste asociado y, a pesar de que el desarrollador puede centrarse en la lógica de negocio, alguien debe asumir el rol de economista y plantear límites ;)
 
-Una de las ventajas de la virtualización y de la tecnología de contenedores es que el equipo de desarrollo puede trabajar en el mismo entorno exacto en el que se ejecutará la aplicación en producción. Es obvia la ganancia en tiempo de despliegue.
+Una de las ventajas de la virtualización y de la tecnología de contenedores es que el equipo de desarrollo puede trabajar en el mismo entorno exacto en el que se ejecutará la aplicación en producción. Es obvia la ganancia en tiempo a la hora de realizar un despliegue.
 
-Los contenedores son una tecnología que ofrece unas ventajas similares a las máquinas virtuales pero optimizando el uso de recursos. Los contenedores tienen un tiempo de arranque reducido con respecto a una máquina convencional y además, la memoria que necesita la app ejecutada en el contenedor se ajusta sobre el proceso, en una MV se reserva la memoria completa.
+Los contenedores son una tecnología que ofrece unas ventajas similares a las máquinas virtuales pero optimizando el uso de recursos. Los contenedores tienen un tiempo de arranque reducido con respecto a una máquina convencional y, además, la memoria que necesita la app ejecutada en el contenedor se ajusta sobre el proceso, en una MV se reserva la memoria completa.
 
-**Azure** es el PaaS de Microsoft, también conocido como la nube. Permite el acceso bajo demanda a múltiples recursos computacionales: almacenamiento, servidores, aplicaciones, servicios. Realmente, Azure es SaaS, IaaS y PaaS. La gestión necesaria on-premise se aleja del usuario en tanto que el proveedor aloja el hardware y el software en su propia infraestructura y ofrece una solución integrada. En la siguiente imagen, tomada de la web de [Red Hat](https://www.redhat.com/es/topics/cloud-computing/iaas-vs-paas-vs-saas) se pueden apreciar las principales diferencias entre las `-aas` y las soluciones desplegadas en cliente. 
+**Azure** es el PaaS de Microsoft, también conocido como la nube hablando en términos coloquiales. Permite el acceso bajo demanda a múltiples recursos computacionales: almacenamiento, servidores, aplicaciones, servicios. Realmente, Azure es SaaS, IaaS y PaaS aunque se considera de forma primaria un PaaS. La gestión necesaria on-premise se aleja del usuario en tanto que el proveedor aloja el hardware y el software en su propia infraestructura y ofrece una solución integrada. En la siguiente imagen, tomada de la web de [Red Hat](https://www.redhat.com/es/topics/cloud-computing/iaas-vs-paas-vs-saas) se pueden apreciar las principales diferencias entre las `-aas` y las soluciones desplegadas en cliente. 
 
 <img src="images/iaas-paas-saas.png" alt="Diferencias entre aas." width="90%">
 
@@ -27,11 +26,11 @@ De acuerdo con [Microsoft](https://azure.microsoft.com/en-us/overview/what-is-sa
 
 <img src="images/what-is-saas.png" alt="Diferencias entre aas." width="90%">
 
-Las tres proporcionan soluciones escalables que siguen el modelo de paga por lo que uses. La realidad es que un PaaS ofrece lo mismo que un SaaS excepto por la propia aplicación, que es el propio desarrollador el que debe mantenerla. Basicamente, a este nivel, los desarrolladores pueden desplegar y desarrollar aplicaciones sin consumo de recursos en la máquina local. Ejemplos, además de Azure pueden ser *Heroku* y *Google App Engine*.
+Las tres proporcionan soluciones escalables que siguen el modelo de paga-por-lo-que-uses. La realidad es que un PaaS ofrece lo mismo que un SaaS excepto por la propia aplicación, que es el propio desarrollador el que debe mantenerla. Basicamente, a este nivel, los desarrolladores pueden desplegar y desarrollar aplicaciones sin consumo de recursos en la máquina local. Ejemplos, además de Azure pueden ser *Heroku* y *Google App Engine*.
 
 Para comprender qué es Azure y por qué es interesante utilizarlo, vamos a plantear un ejemplo de integración con `Docker`. La idea detrás de Docker es la de utilizar contenedores portables que consumen pocos recursos para encapsular diferentes aplicaciones software que, además, puedan ejecutarse en cualquier máquina que tenga `Docker` instalado. Incluso en una nube como *Azure*. Es decir, independientemente de lo que esté corriendo por debajo en cuanto a sistema operativo o tipo de hardware de la máquina, el despliegue se llevará a cabo. Un contenedor no deja de ser algo que funciona por sí mismo, es autocontenido y que se puede llevar a cualquier parte pues funciona independientemente del soporte y es portable.
 
-`Docker` necesita que dentro del contenedor esté todo aquello que la aplicación va a necesitar (o al menos que le indiques dónde debe ir a buscarlo y enlazarlo). Una gran ventaja es que se encierran en el contenedor las dificultades de instalación, las dependencias y demás quebraderos de cabeza y se deben sufrir una vez! por supuesto los típicos de problemas de actualización de una librería concreta o de una dependencia en una versión concreta que se pierde desaparecen. Por si fuera poco, existe un repositorio público gratutito en la nube de las imágenes que se generan llamado [DockerHub](https://hub.docker.com/) y se fundamenta todo sobre un sistema de versionado!
+`Docker` necesita que dentro del contenedor esté todo aquello que la aplicación va a necesitar (o al menos que le indiques dónde debe ir a buscarlo y enlazarlo). Una gran ventaja es que se encierran en el contenedor las dificultades de instalación, las dependencias y demás quebraderos de cabeza y se deben sufrir una única vez! por supuesto los típicos problemas de actualización de una librería concreta con incompatibilidades o de una dependencia en una versión concreta que se pierde, desaparecen. Por si fuera poco, existe un repositorio público gratutito en la nube de las imágenes que se generan llamado [DockerHub](https://hub.docker.com/) y se fundamenta todo sobre un sistema de versionado! Entrar en problemas de conflictos o de pérdida de funcionalidad por cambio de versión es casi imposible!
 
 Una `Docker image` es una plantilla básica de un contenedor que contiene el sistemas operativo, las librerías y la aplicación. Un contenedor se arranca a partir de una imagen y, como hemos dicho, las podemos generar y descargar después desde [DockerHub](https://hub.docker.com/), que está gestionado por `Docker`.
 
@@ -43,19 +42,25 @@ Para la gestión de los contenedores (arranque, parada, pausa, etc.) se utiliza 
 
 Por último, el `Docker client` es un interfaz de línea de comandos (CLI) que se utiliza para controlar el `Docker engine`.
 
-## Configuración del entorno
+Para poder llevar a cabo el ejemplo es necesario disponer de un entorno de desarrollo/despliegue configurado adecuadamente para `Azure` y `Docker`. Se irán viendo a continuación los pasos necesarios y se dará, además, un pequeño tutorial de introducción a ambas tecnologías.
+
+# Configuración del entorno
 
 A continuación se mostrarán un conjunto mínimo de pasos necesarios para configurar `Docker` y ser capaces de descargar imágenes ya creadas o generar las nuestras propias a partir de un Dockerfile y subirlas al repositorio. Se muestra sobre una máquina con Ubuntu 18.04 pero sería equivalente en máquinas con otros SO instalados sobre los que pueda correr Docker, más información en los enlaces de la sección siguiente.
 
 ## Pasos previos
 
-1. Cread una cuenta en dockerhub. [enlace](https://hub.docker.com/signup).
+1. Cread una cuenta en DockerHub. [enlace](https://hub.docker.com/signup).
 
 2. Instalad (cada uno que decida el SO que va a utilizar) el motor docker en vuestras máquinas [enlace](https://docs.docker.com/install/)
 
-3. Vamos a desplegar la primera aplicación *dockerizada* siguiendo los siguientes pasos
+3. Instalad un cliente `Git` en vuestras máquinas
 
-Se clona una aplicación desde GitHub (se podrían descargar desde el propio DockerHub)
+4. Vamos a desplegar la primera aplicación *dockerizada* siguiendo los siguientes pasos
+
+## Hola Mundo en Docker
+
+Para verificar que la instalación es correcta y que todo está funcionando adecuadamente, se clona una aplicación desde GitHub (se podrían descargar desde el propio DockerHub)
 
 ```{bash eval=F}
 cfernandez:~>mkdir ics-master
@@ -116,17 +121,19 @@ cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>cat package.json
 
 ```
 
-Se trata de una aplicación DEMO con licencia MIT. Se explicarán más adelante las instrucciones del `Dockerfile` (palabras clave en mayúsculas).
+Se trata de una aplicación DEMO con licencia MIT de Node.js. Se explicarán más adelante las instrucciones del `Dockerfile` (palabras clave en mayúsculas).
 
 Un *Dockerfile* es un fichero de texto donde se indican los diferentes comandos que se quieren ejecutar sobre una imagen base de partida. Es el punto de partida que leerá el comando `$ docker build` para poder construir la imagen a partir de las instrucciones y la información de entorno que encuentre en el fichero.
 
 Más adelante se verán buenas prácticas a la hora de crear un Dockerfile.
 
-En el ejemplo anterior se parte de una imagen de Node.js en su versión 6.11.5 disponible en `DockerHub`
+En el ejemplo anterior se parte de una imagen de Node.js en su versión 6.11.5 disponible en `DockerHub`.
 
 ## Construye y prueba tu primera imagen Docker
 
-### Verifica que el demonio de docker está corriendo en el sistema
+### Docker service
+
+Verifica que el demonio de docker está corriendo en el sistema y que no haya ningún problema:
 
 ```{bash eval=F}
 cfernandez:~> sudo systemctl status docker
@@ -152,11 +159,12 @@ nov 04 12:21:43 xps-13-9360 dockerd[29858]: time="2019-11-04T12:21:43.555673900+
 nov 04 12:21:43 xps-13-9360 dockerd[29858]: time="2019-11-04T12:21:43.758197196+
 ```
 
-### Generación de la imagen
+### Docker image build
+
+Genera la imagen del proyecto que acabas de descargar. Para ello debes ejecutar el comando `$docker image build`.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker image build -t bulletinboard:1.0 .
-[sudo] password for cfernandez: 
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker image build -t bulletinboard:1.0 .
 Sending build context to Docker daemon  45.57kB
 Step 1/6 : FROM node:6.11.5
 6.11.5: Pulling from library/node
@@ -285,48 +293,58 @@ Successfully tagged bulletinboard:1.0
 
 ```
 
-### Inicializa el contenedor con la nueva imagen
+Luego se hablará de ello pero fíjate que la generación de la imagen ha requerido 6 pasos. Tras la correcta finalización de cada uno de ellos, aparece un código, por ejemplo en el paso 6 de 6 nos encontramos con e3e26d80b9d0 es el id de la capa.
+
+### Docker container run
+
+Inicializa el contenedor con la nueva imagen. Para ello debes ejecutar el comando `$docker container run`. En este caso fíjate que se publica en el puerto 8000 de la máquina local y que se enlaza con el 8080 del contenedor.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker container run --publish 8000:8080 --detach --name bb bulletinboard:1.0
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker container run --publish 8000:8080 --detach --name bb bulletinboard:1.0
 e70e42aadc1b851d610bbcc79f928516ab9b5a6755b5dc54d459c993db2356a4
 
 ```
 
-Identifica para qué se utiliza cada uno de los flags del comando.
+Se indica que ejecute el contenedor en segundo plano `--detach`, con un nombre determinado `--name` que en este caso es bb y, se solicita que se genere a partir de la imagen llamada bulletingboard en su version 1.0 con `bulletinboard:1.0`.
 
-Abre un navegador web con la siguiente dirección [localhost:8000](localhost:8000)
+Abre un navegador web con la siguiente dirección [localhost:8000](localhost:8000) y comprueba qué es lo que aparece, debería ser como lo que aparece en la siguiente imagen:
 
-### Lista los contenedores Docker corriendo en el sistema y elimina el que acabas de crear
+<img src="images/bulletin-ok.png" alt="App bulletinboard version 1.0." width="90%">
 
-Listar contenedores activos:
+### Docker ps
+
+Lista los contenedores Docker corriendo en el sistema y elimina el que acabas de crear. Para listar contenedores activos se utiliza el comando `docker ps`.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker ps
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES
 e70e42aadc1b        bulletinboard:1.0   "npm start"         3 minutes ago       Up 3 minutes        0.0.0.0:8000->8080/tcp   bb
 
 ```
 
-Eliminar contenedor activo:
+Para liminar un contenedor activo que está corriendo, sin pararlo, se debe utilizar el comando `$docker container rm --force` y dar el nombre del contenedor, en este caso bb o los primeros dígitos del CONTAINER ID de la siguiente forma. En caso de tratar de eliminar un contenedor que está corriendo nos dará un error:
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker container rm --force bb
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker container rm --force bb
 bb
 
 ```
 
-### Lista las imágenes de aplicaciones generadas
+### Docker images
+
+Es posible listar las imágenes de aplicaciones generadas con el comando `$docker images`.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker images
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 bulletinboard       1.0                 2cfc10259620        10 minutes ago      681MB
 hello-world         latest              fce289e99eb9        10 months ago       1.84kB
 node                6.11.5              852391892b9f        24 months ago       662MB
 ```
 
-elimina las imágenes del sistema:
+### Docker rmi
+
+Así como eliminar imágenes del sistema con el comando `$docker rmi`.
 
 ```{bash eval=F}
 cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker rmi 2cfc10259620
@@ -352,12 +370,12 @@ Untagged: hello-world@sha256:c3b4ada4687bbaa170745b3e4dd8ac3f194ca95b2d0518b417f
 Deleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587e
 ```
 
-### Realiza una búsqueda de las imágenes disponibles en Dockerhub por línea de comandos
+### Docker search
 
-Por ejemplo para el sistema operativo Centos.
+Se puede realizar una búsqueda de las imágenes disponibles en Dockerhub por línea de comandos sin necesidad de acceder a la web. Por ejemplo para el sistema operativo Centos con el comando `$docker search centos`. Nos devolverá todas aquellas imágenes públicas de DockerHub que aparezcan en la búsqueda por la palabra clave indicando además si es la imagen oficial y el número de votos positivos o estrellas que otros usuarios le han dado. Además de una muy breve descripción de la imagen.
 
 ```{bash eval=F}
-cfernandez :~>sudo docker search centos
+cfernandez :~>docker search centos
 NAME                               DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
 centos                             The official build of CentOS.                   5648                [OK]                
 ansible/centos7-ansible            Ansible on Centos7                              125                                     [OK]
@@ -385,12 +403,13 @@ pivotaldata/centos6.8-dev          CentosOS 6.8 image for GPDB development      
 pivotaldata/centos7-dev            CentosOS 7 image for GPDB development           0                                       
 smartentry/centos                  centos with smartentry                          0                                       [OK]
 ```
-### Descarga la imagen
 
-Revisa el significado de cada columna mostrada por el comando anterior y descarga la imagen que consideres oportuna.
+### Docker image pull
+
+Para descargar una de las posibles imágenes se debe usar el comando `$docker image pull` seguido del nombre de la imagen. No es obligatorio pero es habitual que las imágenes generadas por el usuario lleven indicado de alguna manera el usuario o la imagen de partida base más el nombre de la imagen final, habitualmente separado por `/`. Algunas aprovechan a poner la versión de la imagen base por ejemplo `centos/mysql-57-centos7` nos indica que el usuario centos ha montado un mysql version 5.7 sobre un centos versión 7. El tag por defecto es `latest`. En caso de que un usuario suba una imagen y no ponga versión es la que pondrá por defecto. Es más correcto versionar siempre las imágenes porque el `latest` de hoy, no tiene por qué ser el de mañana y puede llevar a confusiones.
 
 ```{bash eval=F}
-cfernandez:~>sudo docker image pull kinogmt/centos-ssh
+cfernandez:~>docker image pull kinogmt/centos-ssh
 Using default tag: latest
 latest: Pulling from kinogmt/centos-ssh
 Image docker.io/kinogmt/centos-ssh:latest uses outdated schema1 manifest format. Please upgrade to a schema2 image for better future compatibility. More information at https://docs.docker.com/registry/spec/deprecated-schema-v1/
@@ -407,26 +426,33 @@ Digest: sha256:acdf7798259f859a8e713f2f88511eef5e0f94cb2d2dec078a1fe169a8aacf63
 Status: Downloaded newer image for kinogmt/centos-ssh:latest
 docker.io/kinogmt/centos-ssh:latest
 ```
-### Interacciona con la línea de comandos de la máquina Dockerizada
+
+### Docker container run -it
+
+Es posible arrancar una máquina y acceder a ella de forma interactiva. Es muy útil, sobre todo al principio para chequear que todo está bien o buscar determinados ficheros y rutas. Para ello es necesario lanzar el comando `$docker container run -it`. En este caso se añade el nombre de la imagen y se le indica el comando que la imagen debe ejecutar que es `$/bin/bash` para que levante una shell.
+
 ```{bash eval=F}
-cfernandez:~>sudo docker container run -it kinogmt/centos-ssh /bin/bash
+cfernandez:~>docker container run -it kinogmt/centos-ssh /bin/bash
 [root@c1576d0b4968 /]# rpm -q centos-release
 centos-release-6-7.el6.centos.12.3.x86_64
 [root@c1576d0b4968 /]# 
 ```
-### Lista de nuevo las imágenes que tiene descargadas el sistema
+
+### Limpieza del sistema
+
+Una vez se han llevado a cabo tareas con `Docker` y dependiendo de la capacidad del disco duro del equipo sobre el que se trabaja no es extraño que notemos un uso elevado del disco duro. Es recomendable no tener todas las imágenes posibles sino únicamente aquellas que necesitamos como base de las finales o, directamente, las imágenes finales con las que se está trabajando. Normalmente la forma más habitual de trabajar es generar una imagen base pesada con todos los recursos necesarios y montar una segunda imagen que parte de ella y lleva la configuración específcia del entorno. Esto es así porque se espera que la imagen base no cambie nada (o poco) a lo largo del ciclo de vida del desarrollo de la aplicación y sin embargo, la imagen que contiene la propia aplicación sí. Si se parte de sistemas complejos/pesados o con muchas dependencias se evita que los tiempos de generación de la imagen sean eternos aunque, algunas veces, se deben sufrir porque aparecen nuevas dependencias no contempladas. En este caso en el equipo hay una imagen que ocupa 773MB, podemos verlo con el comando `$docker image ls`.
 
 ```{bash eval=F}
-cfernandez:~/dics-master>sudo docker image ls
+cfernandez:~/dics-master>docker image ls
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 kinogmt/centos-ssh   latest              dc8713dad282        3 years ago         773MB
 
 ```
 
-### Lista contenedores activos e inactivos y eliminálos
+Se pueden listar contenedores activos e inactivos y eliminarlos.
 
 ```{bash eval=F}
-cfernandez:~/ics-master>sudo docker container ps
+cfernandez:~/ics-master>docker container ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 cfernandez:~/ics-master>sudo docker container ls -a
 CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS                      PORTS               NAMES
@@ -437,10 +463,10 @@ cc66c4be321a        fce289e99eb9         "/hello"            8 hours ago        
 
 ```
 
-eliminar contenedores:
+para eliminar los contenedores bastaría con indicar al comando `$docker container rm` los CONTAINER ID (completos o los primeros dígitos) de aquellos que se quieran eliminar:
 
 ```{bash eval=F}
-cfernandez:~/ics-master>sudo docker container rm c1576d0b4968 83a2fea9e1b0 c965a44e0e12 cc66c4be321a
+cfernandez:~/ics-master>docker container rm c1576d0b4968 83a2fea9e1b0 c965a44e0e12 cc66c4be321a
 c1576d0b4968
 83a2fea9e1b0
 c965a44e0e12
@@ -448,10 +474,14 @@ cc66c4be321a
 
 ```
 
-eliminar imágenes:
+para eliminar una imagen se debe utilizar el comando `$docker rmi` seguido del IMAGE ID de la imagen o, al menos, los primeros dígitos.
 
 ```{bash eval=F}
-cfernandez:~/ics-master>sudo docker rmi dc8713dad282
+cfernandez:~/dics-master>docker image ls
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+kinogmt/centos-ssh   latest              dc8713dad282        3 years ago         773MB
+
+cfernandez:~/ics-master>docker rmi dc8713dad282
 Untagged: kinogmt/centos-ssh:latest
 Untagged: kinogmt/centos-ssh@sha256:acdf7798259f859a8e713f2f88511eef5e0f94cb2d2dec078a1fe169a8aacf63
 Deleted: sha256:dc8713dad28219f7be85c1c7ab08fa858905d7b4f78bf4999e6cdcd36eae2377
@@ -491,11 +521,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ```
 
-### Instrucciones dentro de un Dockerfile
+A continuación se comentarán algunas de las instrucciones más habituales dentro un Dockerfile. Para obtener una información más detalle se recomienda visitar el siguiente [enlace](https://docs.docker.com/engine/reference/builder/) con la documentación oficial. Se mostrarán las instrucciones más habituales aunque existen otras.
 
-Para obtener una información más detalle se recomienda visitar el siguiente [enlace](https://docs.docker.com/engine/reference/builder/) con la documentación oficial. Se mostrarán las instrucciones más habituales aunque existen otras.
-
-#### FROM
+### FROM
 
 Indica la imagen de partida a partir de la cual se comenzará a crear la imagen. Lo primero que hará el motor de docker es ver si la imagen está en local, en caso contrario irá al repositorio de internet, como por ejemplo `dockerhub` y la descargará. Toda imagen debe tener un `nombre` y un `tag`, esto es una de las cosas que hace que Docker sea una herramienta de tanta utilidad, siempre será posible acceder a la máquina concreta, en su versión precisa para replicar un comportamiento.
 
@@ -506,7 +534,7 @@ FROM <nombre.imagen>
 FROM <nombre.imagen>:<tag>
 ```
 
-#### WORKDIR
+### WORKDIR
 
 La instrucción `WORKDIR` fija el directorio de trabajo de cualquier instrucción `RUN`, `CMD`, `ENTRYPOINT`, `COPY` o `ADD` que vayan a continuación de ella en el fichero `Dockerfile`. Se puede utilizar múltiples veces y si se trata de paths relativos, lo serán al primer `WORKDIR` del fichero. Además, se puede usar de forma conjunta con variables de entorno definidas con `ENV`. Si el directorio no existiese, se crearía.
 
@@ -519,7 +547,7 @@ WORKDIR $DIRPATH/nombreDirectorio
 
 
 
-#### RUN
+### RUN
 
 Es posible lanzar la ejecución de un comando sobre la capa anterior de tal forma que al finalizar se haga un commit y se genere una nueva capa. Este funcionamiento permite que, por ejemplo, si en nuestra generación de imagen con 5 capas previa se detecta un fallo o una librería que falta, cuando se construya la imagen de nuevo `docker` verifique los cambios y ejecute únicamente aquellas capas que hayan cambiado. Esto supone un ahorro en tiempo considerable. La instrucción `RUN` puede llevarse a cabo de dos formas: modo consola o modo ejecución.
 
@@ -539,7 +567,7 @@ La sintaxis sería como sigue:
 RUN ["comando", "parámetro", "parámetro"]
 ```
 
-#### ENV
+### ENV
 
 Se utiliza la instrucción `ENV` para configurar aquellas variables de entorno que se desee que estén disponibles para toda la secuencia de instrucciones del fichero.
 
@@ -550,7 +578,7 @@ ENV <key> <value>
 ENV <key>=<value>
 ```
 
-#### ADD y COPY
+### ADD y COPY
 
 Es posible copiar archivos o incluso directorios desde nuestra máquina al contenedor para tenerlos disponibles en la ruta especificada y que puedan ser utilizados por la imagen. Ambas instrucciones funcionan de manera similar aunque de forma general se prefiere COPY porque es más transparente que ADD. `COPY` funciona de manera intuitiva copiando ficheros del sistema local al contenedor mientras que `ADD` puede también trabajar sobre ficheros comprimidos o URLs.
 
@@ -560,7 +588,7 @@ La sintaxis sería como sigue:
 COPY <origen> <destino>
 ```
 
-#### EXPOSE
+### EXPOSE
 
 La instrucción `EXPOSE` indica los puertos en los que el contenedor va a escuchar a la espera de conexiones entrantes. Lo más habitual es utilizar el mismo puerto que la aplicación original utilizaría al ser desplegada en un equipo de forma convencional, por ejemplo servidores web en el 80, aunque es posible indicar el puerto sin dicha restricción.
 
@@ -570,7 +598,7 @@ La sintaxis sería como sigue:
 EXPOSE 22
 ```
 
-#### CMD y ENTRYPOINT
+### CMD y ENTRYPOINT
 
 Ambas instrucciones permiten indicar qué ejecutable debe ser ejecutado cuando se inicia un contenedor. Algunas de las instrucciones anteriores pueden ponerse en el `Dockerfile` o de forma explícita en el comando `$ docker run`. En caso de no haberlo hecho así, la única manera de conseguir que la imagen sea ejecutable es con CMD o ENTRYPOINT.
 
@@ -589,7 +617,7 @@ ENTRYPOINT ["ejecutable", "parametro"]
 
 También tiene formato ejecución y modo consola.
 
-#### VOLUME
+### VOLUME
 
 En caso de querer exponer algún almacenamiento, ya sea un área de almacenamiento de bases de datos, una estructura de ficheros o una configuración de almacenamiento debe usarse la instrucción `VOLUME`. Para más información acerca de como compartir volúmenes usando la consola se puede consultar el siguiente [enlace](https://docs.docker.com/storage/volumes/).
 
