@@ -296,6 +296,20 @@ Successfully tagged bulletinboard:1.0
 
 Luego se hablará de ello pero fíjate que la generación de la imagen ha requerido 6 pasos. Tras la correcta finalización de cada uno de ellos, aparece un código, por ejemplo en el paso 6 de 6 nos encontramos con e3e26d80b9d0 es el id de la capa.
 
+Los comandos generales para la gestión de contenedores, son los siguientes:
+
+* docker run: comando para crear un nuevo contenedor a partir de una imagen.
+
+* docker start: comando para levantar un contenedor parado ya existente.
+
+* docker stop: comando para parar un contenedor en ejecución.
+
+* docker kill: comando para la parada forzosa de un contenedor que se haya quedado inaccesible.
+
+* docker rm: comando para eliminar un contenedor parado.
+
+A continuación se presentarán los comandos de gestión básicos.
+
 ## Docker container run
 
 Inicializa el contenedor con la nueva imagen. Para ello debes ejecutar el comando `$docker container run`. En este caso fíjate que se publica en el puerto 8000 de la máquina local y que se enlaza con el 8080 del contenedor.
