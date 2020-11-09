@@ -129,15 +129,16 @@ Más adelante se verán buenas prácticas a la hora de crear un Dockerfile.
 
 En el ejemplo anterior se parte de una imagen de Node.js en su versión 6.11.5 disponible en `DockerHub`.
 
-## Construye y prueba tu primera imagen Docker
+# Docker
 
-### Docker service
+Construye y prueba tu primera imagen Docker para comprobar que la instalación es correcta.
+
+## Docker service
 
 Verifica que el demonio de docker está corriendo en el sistema y que no haya ningún problema:
 
 ```{bash eval=F}
-cfernandez:~> sudo systemctl status docker
-[sudo] password for cfernandez: 
+cfernandez:~>systemctl status docker
 docker.service - Docker Application Container Engine
    Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: e
    Active: active (running) since Mon 2019-11-04 11:38:16 CET; 56min ago
@@ -159,7 +160,7 @@ nov 04 12:21:43 xps-13-9360 dockerd[29858]: time="2019-11-04T12:21:43.555673900+
 nov 04 12:21:43 xps-13-9360 dockerd[29858]: time="2019-11-04T12:21:43.758197196+
 ```
 
-### Docker image build
+## Docker image build
 
 Genera la imagen del proyecto que acabas de descargar. Para ello debes ejecutar el comando `$docker image build`.
 
@@ -295,7 +296,7 @@ Successfully tagged bulletinboard:1.0
 
 Luego se hablará de ello pero fíjate que la generación de la imagen ha requerido 6 pasos. Tras la correcta finalización de cada uno de ellos, aparece un código, por ejemplo en el paso 6 de 6 nos encontramos con e3e26d80b9d0 es el id de la capa.
 
-### Docker container run
+## Docker container run
 
 Inicializa el contenedor con la nueva imagen. Para ello debes ejecutar el comando `$docker container run`. En este caso fíjate que se publica en el puerto 8000 de la máquina local y que se enlaza con el 8080 del contenedor.
 
@@ -311,7 +312,7 @@ Abre un navegador web con la siguiente dirección [localhost:8000](localhost:800
 
 <img src="images/bulletin-ok.png" alt="App bulletinboard version 1.0." width="90%">
 
-### Docker ps
+## Docker ps
 
 Lista los contenedores Docker corriendo en el sistema y elimina el que acabas de crear. Para listar contenedores activos se utiliza el comando `docker ps`.
 
@@ -330,7 +331,7 @@ bb
 
 ```
 
-### Docker images
+## Docker images
 
 Es posible listar las imágenes de aplicaciones generadas con el comando `$docker images`.
 
@@ -342,12 +343,12 @@ hello-world         latest              fce289e99eb9        10 months ago       
 node                6.11.5              852391892b9f        24 months ago       662MB
 ```
 
-### Docker rmi
+## Docker rmi
 
 Así como eliminar imágenes del sistema con el comando `$docker rmi`.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker rmi 2cfc10259620
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker rmi 2cfc10259620
 Untagged: bulletinboard:1.0
 Deleted: sha256:2cfc1025962090cd26fe03f9b6e1effe6deea48dcba59239dbbc80bcec5e7864
 Deleted: sha256:0756607407a1155bcb0a4cb4d096ccbec4cc94b5b3f73d744c63c05a777a65c4
@@ -364,13 +365,13 @@ Deleted: sha256:bb9d9d04eaa98ca064f89f1da2ba23edd8cfacf634d5d999e513b02d60a2cc62
 es posible que para alguna imagen sea necesario forzar la eliminación de la imagen.
 
 ```{bash eval=F}
-cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>sudo docker rmi -f fce289e99eb9
+cfernandez:~/ics-master/node-bulletin-board/bulletin-board-app>docker rmi -f fce289e99eb9
 Untagged: hello-world:latest
 Untagged: hello-world@sha256:c3b4ada4687bbaa170745b3e4dd8ac3f194ca95b2d0518b417fb47e5879d9b5f
 Deleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587e
 ```
 
-### Docker search
+## Docker search
 
 Se puede realizar una búsqueda de las imágenes disponibles en Dockerhub por línea de comandos sin necesidad de acceder a la web. Por ejemplo para el sistema operativo Centos con el comando `$docker search centos`. Nos devolverá todas aquellas imágenes públicas de DockerHub que aparezcan en la búsqueda por la palabra clave indicando además si es la imagen oficial y el número de votos positivos o estrellas que otros usuarios le han dado. Además de una muy breve descripción de la imagen.
 
@@ -404,7 +405,7 @@ pivotaldata/centos7-dev            CentosOS 7 image for GPDB development        
 smartentry/centos                  centos with smartentry                          0                                       [OK]
 ```
 
-### Docker image pull
+## Docker image pull
 
 Para descargar una de las posibles imágenes se debe usar el comando `$docker image pull` seguido del nombre de la imagen. No es obligatorio pero es habitual que las imágenes generadas por el usuario lleven indicado de alguna manera el usuario o la imagen de partida base más el nombre de la imagen final, habitualmente separado por `/`. Algunas aprovechan a poner la versión de la imagen base por ejemplo `centos/mysql-57-centos7` nos indica que el usuario centos ha montado un mysql version 5.7 sobre un centos versión 7. El tag por defecto es `latest`. En caso de que un usuario suba una imagen y no ponga versión es la que pondrá por defecto. Es más correcto versionar siempre las imágenes porque el `latest` de hoy, no tiene por qué ser el de mañana y puede llevar a confusiones.
 
@@ -427,7 +428,7 @@ Status: Downloaded newer image for kinogmt/centos-ssh:latest
 docker.io/kinogmt/centos-ssh:latest
 ```
 
-### Docker container run -it
+## Docker container run -it
 
 Es posible arrancar una máquina y acceder a ella de forma interactiva. Es muy útil, sobre todo al principio para chequear que todo está bien o buscar determinados ficheros y rutas. Para ello es necesario lanzar el comando `$docker container run -it`. En este caso se añade el nombre de la imagen y se le indica el comando que la imagen debe ejecutar que es `$/bin/bash` para que levante una shell.
 
@@ -438,7 +439,21 @@ centos-release-6-7.el6.centos.12.3.x86_64
 [root@c1576d0b4968 /]# 
 ```
 
-### Limpieza del sistema
+## Docker logs
+
+En ocasiones es necesario revisar los logs de la máquina. Es cierto que `Docker` puede ser poco informativo en alguna ocasión y se trata de una de ellas. Podemos lanzar un comando para ejecutar un contenedor y ver que éste se cae sin motivo aparente. Para consultar los logs se puede utilizar el comando `$docker logs` seguido del CONTAINER ID. Por ejemplo, la salida de log del contenedor del ejemplo de bulletinboard es la siguiente:
+
+```{bash eval=F}
+cfernandez:~ics-master/node-bulletin-board/bulletin-board-app>docker logs d343
+
+> vue-event-bulletin@1.0.0 start /usr/src/app
+> node server.js
+
+Magic happens on port 8080...
+```
+
+
+## Limpieza del sistema
 
 Una vez se han llevado a cabo tareas con `Docker` y dependiendo de la capacidad del disco duro del equipo sobre el que se trabaja no es extraño que notemos un uso elevado del disco duro. Es recomendable no tener todas las imágenes posibles sino únicamente aquellas que necesitamos como base de las finales o, directamente, las imágenes finales con las que se está trabajando. Normalmente la forma más habitual de trabajar es generar una imagen base pesada con todos los recursos necesarios y montar una segunda imagen que parte de ella y lleva la configuración específcia del entorno. Esto es así porque se espera que la imagen base no cambie nada (o poco) a lo largo del ciclo de vida del desarrollo de la aplicación y sin embargo, la imagen que contiene la propia aplicación sí. Si se parte de sistemas complejos/pesados o con muchas dependencias se evita que los tiempos de generación de la imagen sean eternos aunque, algunas veces, se deben sufrir porque aparecen nuevas dependencias no contempladas. En este caso en el equipo hay una imagen que ocupa 773MB, podemos verlo con el comando `$docker image ls`.
 
@@ -454,7 +469,7 @@ Se pueden listar contenedores activos e inactivos y eliminarlos.
 ```{bash eval=F}
 cfernandez:~/ics-master>docker container ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-cfernandez:~/ics-master>sudo docker container ls -a
+cfernandez:~/ics-master>docker container ls -a
 CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS                      PORTS               NAMES
 c1576d0b4968        kinogmt/centos-ssh   "/bin/bash"         9 minutes ago       Exited (0) 8 minutes ago                        hungry_ptolemy
 83a2fea9e1b0        kinogmt/centos-ssh   "/bin/bash"         12 minutes ago      Exited (0) 9 minutes ago                        nervous_lederberg
@@ -473,6 +488,14 @@ c965a44e0e12
 cc66c4be321a
 
 ```
+
+se podría ser más directo y eliminar todos los contenedores parados de la máquina, más info en el [enlace](https://docs.docker.com/engine/reference/commandline/rm/):
+
+```{bash eval=F}
+cfernandez:~/ics-master>docker rm $(docker ps -a -q)
+```
+
+en caso de necesitas parar contenedores de la máquina de forma rápida se podría ejecutar de forma similar el comando`$docker stop $(docker ps -a -q)`.
 
 para eliminar una imagen se debe utilizar el comando `$docker rmi` seguido del IMAGE ID de la imagen o, al menos, los primeros dígitos.
 
@@ -627,6 +650,201 @@ La sintaxis sería la siguiente:
 VOLUME ["/path/files", "/path/files"]
 ```
 
+# Azure
+
+Como se ha mencionado anteriormente Azure es el PaaS de Microsoft. A partir del ejemplo de bulletinboard visto al comienzo del curso se verán los pasos necesarios a llevar a cabo para desplegar un contenedor sobre Azure. 
+
+## Alta en la cuenta de Azure
+
+Lo primero que hay que hacer es darse de alta en Azure, para ello debéis visitar el siguiente [enlace](https://azure.microsoft.com/es-es/free/).
+
+<img src="images/altaAzure.png" alt="Cread la cuenta gratuita de Azure." width="90%">
+
+Como podéis ver, dispondréis de una crédito de 170€. Además, 12 meses de servicios populares gratuitos y siempre gratis, más de 25 servicios.
+
+En mi caso, en la pantalla de Login, he creado una nueva cuenta.
+
+<img src="images/login.png" alt="Cread la cuenta gratuita de Azure." width="90%">
+
+Pasaréis por el alta de nuevo usuario donde, de nuevo, os indicará los servicios/saldo de la cuenta gratuita.
+
+<img src="images/azure_acercade.png" alt="Rellenad con vuestros datos el registro." width="90%">
+
+Si todo ha ido correctamente, pasaréis a la vista del panel con todos las posibilidades que ofrece Azure. Todos los pasos que veréis reflejados en el documento a continuación se pueden realizar tanto vía web como en consola. En este caso, se mostrarán únicamente los pasos a través de la consola.
+
+## Instalación consola de azure en Ubuntu
+
+Lo primero que hace falta es instalar la consola de Azure para Ubuntu. Microsoft ya tiene disponible un script completo de instalación para ejecutar como super-usuario.
+
+```{bash eval=F}
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+En caso de problemas o que por algún motivo no se quiera ejecutar dicho script, se pueden consultar los pasos de instalación manual en el siguiente [enlace](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest).
+
+### Dependencia para despliegue de contenedores
+
+Es necesario instalar [Helm](https://helm.sh/), para ello se debe descargar y ejecutar el siguiente script:
+
+```{bash eval=F}
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+
+el resultados es el mostrado en la siguiente imagen.
+
+<img src="images/helm.png" alt="Ejecución del script de instalación de Helm." width="90%">
+
+## Login a Azure desde consola
+
+Para verificar que todo está correcto, se puede ejecutar el login a Azure desde consola, el resultado es el mostrado en la siguiente imagen.
+
+<img src="images/az_login.png" alt="Login correcto a Azure desde consola." width="90%">
+
+A partir de este momento lo que debemos conseguir es que nuestra imagen Docker esté disponible en la plataforma Azure para poder publicar nuestro servicio. Como en cualquier otra infraestructura `Docker`, se puede poner pública en DockerHub y ser llamada desde allí. 
+
+En todo caso, vamos a simular que se trata de aplicaciones empresariales y que no se guardan en repositorios públicos, sino que se guardan en privados (sólo personal autorizado con roles predefinidos tiene acceso).
+
+## Creación del Container Registry
+
+Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso *Container Registry* o ACR. Para ello es necesario defiinir la siguiente información: 
+
+* *Registry name*: lo que se utilice formará parte de la URL en la que se desplegará nuestro contenedor Docker. Debe ser único y es posible que a la primera nos produzca algún error por estar reservado por otro usuario de Azure.
+* *Resource group*: agrupación lógica de recursos.
+* *SKU*: tamaño del registro, en principio con la opción *Basic* será suficiente.
+
+```{bash eval=F}
+az group create --name miGrupoRecursos --location "West Europe"
+```
+
+El resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_group.png" alt="Cread vuestro grupo de recursos." width="90%">
+
+Idealmente y para evitar latencia, es recomendable buscar una localización cercana a nuestras localización. Se pueden consultar las localizaciones disponibles con el siguiente comando:
+
+```{bash eval=F}
+az account list-locations
+```
+
+Ahora vamos a crear el *Container Registry* sobre nuestro grupo de recursos. Para ello se ejecuta el siguiente comando:
+
+```{bash eval=F}
+az acr create --name miPlanServicio --resource-group miGrupoRecursos --sku Basic
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_acr.png" alt="Cread vuestro Container Registry dentro de vuestro grupo de recursos." width="90%">
+
+## Push de la imagen al Container registry de Azure
+
+Ahora ya tenemos lista la infraestructura de Azure para recibir nuestra imagen/es de Docker generadas en local. Para verificar que el login es correcto, ejecutad el siguiente comando:
+
+```{bash eval=F}
+az acr login --name miPlanServicio
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_acr_login.png" alt="Login al repositorio remoto de imágenes creado." width="90%">
+
+Para hacer el push de la iamgen Docker es necesario generar un tag. Debe tener un formato específico <*nombreRegistro*>.*azurecr.io*/<*nombre*>:<*version*> Recordad que es necesario que no haya duplicados en el nombre del *Container Registry*.
+
+Para generar un tag sobre una imagen local en Docker, ejecutad el siguiente comando:
+
+```{bash eval=F}
+$ docker tag bulletinboard:1.0 miPlanServicio.azurecr.io/bulletinboard:v1
+```
+
+listad las imágenes Docker del sistema:
+
+```{bash eval=F}
+$ docker images
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_tag.png" alt="Cread un tag con el nombre adecuado para vuestra imagen local." width="90%">
+
+Si os hace falta, podéis generar la imagen Docker en local con el tag directamente:
+
+```{bash eval=F}
+$ docker build -t miPlanServicio.azurecr.io/bulletinboard:v1 .
+```
+
+Como se trata de un repositorio privado, es necesario habilitar el login. En otro caso os dará error el push de la imagen Docker y no podréis avanzar. Se puede realizar de varias formas, realmente el despliegue que se está realizando en el tutorial es muy básico y no estamos parando en consideraciones de seguridad ni de generación de roles especiales, esto queda para vosotros. Una opción que se puede llevar a cabo es la habilitar el acceso Admin, para ello es necesario ejecutar el siguiente comando:
+
+```{bash eval=F}
+$az acr update -n miPlanServicio --admin-enabled true
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_adminEnabled.png" alt="Habilitad acceso admin al container registry" width="90%">
+
+Si accedéis al portal de Azure, y al *Container registries*, veréis allí el que habéis creado. Accediendo al mismo veréis sus propiedades. En el *Access keys* veréis lo siguiente:
+
+<img src="images/az_miPlanServicio_accessKeys.png" alt="Access keys de nuestro container registry." width="90%">
+
+podéis ver que está habilitado el acceso para usuario Admin (lo habéis solicitado por consola en el comando anterior) y os muestra los passwords que deberéis escribir en los siguientes pasos. Si todo ha salido correctamente y tratáis de hacer el login por consola con el siguiente comando:
+
+```{bash eval=F}
+$ docker login miPlanServicio.azurecr.io
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_docker_login_succeeded.png" alt="Habilitad acceso admin al container registry." width="90%">
+
+Insisto en que no se están siguiendo consideraciones de seguridad, el propio comando lanza un Warning al respecto.
+
+Ahora ya podemos hacer el push de nuestra imagen Docker local para su despliegue en Azure con el siguiente comando:
+
+```{bash eval=F}
+$ docker push miPlanServicio.azurecr.io/bulletinboard:v1
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/docker_push_azure.png" alt="Acción de push de la imagen en el contenedor remoto." width="90%">
+
+## Creación del contenedor con la imagen recién subida a Azure
+
+Ahora que la imagen local ya está subida al repositorio remoto, es necesario crear el contenedor que incluirá a dicha imagen con las opciones necesarias, en este caso el puerto, el nombre dns, etc con el siguiente comando:
+
+```{bash eval=F}
+$ az container create --resource-group miGrupoRecursos --name test-bulletinboard --image miPlanServicio.azurecr.io/bulletinboard:v1 --dns-name-label test-bulletinboard --ports 8080
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_container_create.png" alt="Creación del contenedor con la imagen recién subida a Azure." width="90%">
+
+## Visitad la web con la imagen operativa
+
+Si todo lo anterior lo habéis ejecutado correctamente podréis visitar la imagen desplegada (en este caso es la imagen de la web de bulletinboard como habéis podido comprobar a lo largo del ejercicio).
+
+La url está formada por <*nombre*>.<*zona geográfica*>.azurecontainer.io:<*puerto*>
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/azure_running_online.png" alt="Imagen docker corriendo sobre contenedor en Azure Cloud." width="90%">
+
+si algo no ha salido bien se pueden revisar los ficheros de log con el siguiente comando:
+
+```{bash eval=F}
+$ az container logs --resource-group miGrupoRecursos --name test-bulletinboard
+```
+
+el resultado es el mostrado en la siguiente imagen:
+
+<img src="images/az_container_log.png" alt="Logs del contenedor desplegado en Azure." width="90%">
+
+Como podéis ver en la siguiente imagen, estos pasos han consumido 0.25 céntimos del crédito original gratuito de 170€.
+
+<img src="images/azure_credit_remaining.png" alt="Imagen con la notificación de crédito total consumido por el despliegue de la imagen." width="90%">
+
+
 # Referencias
 
 https://linuxize.com/post/how-to-install-and-use-docker-on-ubuntu-18-04/
@@ -640,3 +858,9 @@ https://www.docker.com/get-started
 https://linuxize.com/post/how-to-build-docker-images-with-dockerfile/
 
 https://www.josedomingo.org/pledin/2016/02/dockerfile-creacion-de-imagenes-docker/
+
+https://blog.payara.fish/deploy-docker-containers-on-azure
+
+https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-authentication#service-principal
+
+https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-get-started-docker-cli
