@@ -2554,6 +2554,15 @@ window.onload = function() {
 };
 </script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -3205,7 +3214,7 @@ Deleted: sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
 </div>
 <div id="dockerfile" class="section level2">
 <h2>Dockerfile</h2>
-<p>Alguna de las buenas prácticas que se considera a la hora de crear un fichero Dockerfile serían las siguientes:</p>
+<p>Alguna de las <a href="https://takacsmark.com/dockerfile-tutorial-by-example-dockerfile-best-practices-2018/">buenas prácticas</a> que se considera a la hora de crear un fichero Dockerfile serían las siguientes:</p>
 <ul>
 <li>Debe mantenerse la configuración mínima necesaria en los contenedores, en otro caso puede que la creación, despliegue y parada de contenedores lleve un tiempo elevado de forma innecesaria.</li>
 <li>No instalar paquetes o dependencias innecesarios, dedicar un tiempo a estudiar los requisitos técnicos de la imagen que se va a generar.</li>
@@ -3321,11 +3330,12 @@ ENTRYPOINT [&quot;ejecutable&quot;, &quot;parametro&quot;]</code></pre>
 </div>
 <div id="creación-del-container-registry" class="section level2">
 <h2>Creación del Container Registry</h2>
-<p>Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso <em>Container Registry</em> o ACR. Para ello es necesario defiinir la siguiente información:</p>
+<p>Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso <em>Container Registry</em> o ACR. El ACR es el registro de imágenes Docker (y Open Container Initiative - OCI) de Azure, permite la creación de imágenes Docker privadas.</p>
+<p>Para ello es necesario defiinir la siguiente información:</p>
 <ul>
-<li><em>Registry name</em>: lo que se utilice formará parte de la URL en la que se desplegará nuestro contenedor Docker. Debe ser único y es posible que a la primera nos produzca algún error por estar reservado por otro usuario de Azure.</li>
+<li><em>Registry name</em>: lo que se utilice formará parte de la URL en la que se desplegará nuestro contenedor Docker. Debe ser único y es posible que a la primera nos produzca algún error por estar reservado por otro usuario de Azure. Debe tener entre 5 y 50 caracteres.</li>
 <li><em>Resource group</em>: agrupación lógica de recursos.</li>
-<li><em>SKU</em>: tamaño del registro, en principio con la opción <em>Basic</em> será suficiente.</li>
+<li><em>SKU</em>: tamaño del registro, en principio con la opción <em>Basic</em> será suficiente. Existen tres niveles: básico, estándar y premium. <a href="https://docs.microsoft.com/es-es/azure/container-registry/container-registry-skus">enlace</a>. Los tre niveles ofrecen las mismas funcionalidades de programación. La diferencia está en el rendimiento y la escalabilidad deseados.</li>
 </ul>
 <pre class="bash"><code>az group create --name miGrupoRecursos --location &quot;West Europe&quot;</code></pre>
 <p>El resultado es el mostrado en la siguiente imagen:</p>
@@ -3452,7 +3462,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
