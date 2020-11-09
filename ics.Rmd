@@ -524,7 +524,7 @@ Deleted: sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
 ```
 
 ## Dockerfile
-Alguna de las buenas prácticas que se considera a la hora de crear un fichero Dockerfile serían las siguientes:
+Alguna de las [buenas prácticas](https://takacsmark.com/dockerfile-tutorial-by-example-dockerfile-best-practices-2018/) que se considera a la hora de crear un fichero Dockerfile serían las siguientes:
 
 * Debe mantenerse la configuración mínima necesaria en los contenedores, en otro caso puede que la creación, despliegue y parada de contenedores lleve un tiempo elevado de forma innecesaria.
 * No instalar paquetes o dependencias innecesarios, dedicar un tiempo a estudiar los requisitos técnicos de la imagen que se va a generar.
@@ -706,11 +706,13 @@ En todo caso, vamos a simular que se trata de aplicaciones empresariales y que n
 
 ## Creación del Container Registry
 
-Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso *Container Registry* o ACR. Para ello es necesario defiinir la siguiente información: 
+Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso *Container Registry* o ACR. El ACR es el registro de imágenes Docker (y Open Container Initiative - OCI) de Azure, permite la creación de imágenes Docker privadas.
 
-* *Registry name*: lo que se utilice formará parte de la URL en la que se desplegará nuestro contenedor Docker. Debe ser único y es posible que a la primera nos produzca algún error por estar reservado por otro usuario de Azure.
+Para ello es necesario defiinir la siguiente información: 
+
+* *Registry name*: lo que se utilice formará parte de la URL en la que se desplegará nuestro contenedor Docker. Debe ser único y es posible que a la primera nos produzca algún error por estar reservado por otro usuario de Azure. Debe tener entre 5 y 50 caracteres.
 * *Resource group*: agrupación lógica de recursos.
-* *SKU*: tamaño del registro, en principio con la opción *Basic* será suficiente.
+* *SKU*: tamaño del registro, en principio con la opción *Basic* será suficiente. Existen tres niveles: básico, estándar y premium. [enlace](https://docs.microsoft.com/es-es/azure/container-registry/container-registry-skus). Los tre niveles ofrecen las mismas funcionalidades de programación. La diferencia está en el rendimiento y la escalabilidad deseados.
 
 ```{bash eval=F}
 az group create --name miGrupoRecursos --location "West Europe"
