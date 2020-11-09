@@ -131,6 +131,8 @@ En el ejemplo anterior se parte de una imagen de Node.js en su versión 6.11.5 d
 
 # Docker
 
+<img src="images/docker-logo.png" alt="Docker logo." width="20%">
+
 Construye y prueba tu primera imagen Docker para comprobar que la instalación es correcta.
 
 ## Docker service
@@ -720,7 +722,7 @@ En todo caso, vamos a simular que se trata de aplicaciones empresariales y que n
 
 ## Creación del Container Registry
 
-Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web. Lo primero que se debe hacer es crear un nuevo recurso *Container Registry* o ACR. El ACR es el registro de imágenes Docker (y Open Container Initiative - OCI) de Azure, permite la creación de imágenes Docker privadas.
+Es bueno recordar que todos los pasos se realizarán por consola pero tienen su equivalente vía web más [info](https://docs.microsoft.com/es-es/azure/container-registry/container-registry-get-started-portal). Lo primero que se debe hacer es crear un nuevo recurso *Container Registry* o ACR. El ACR es el registro de imágenes Docker (y Open Container Initiative - OCI) de Azure, permite la creación de imágenes Docker privadas.
 
 Para ello es necesario defiinir la siguiente información: 
 
@@ -860,23 +862,116 @@ Como podéis ver en la siguiente imagen, estos pasos han consumido 0.25 céntimo
 
 <img src="images/azure_credit_remaining.png" alt="Imagen con la notificación de crédito total consumido por el despliegue de la imagen." width="90%">
 
+# Docker compose
+
+<img src="images/docker-compose.png" alt="docker-compose logo." width="20%">
+
+La potencia y versatilidad de `Docker` a la hora de generar imágenes y contenedores es clara. La potencia real aparece a la hora de considerar un despliegue desde un punto de vista más ambicioso: contenedores con múltiples aplicaciones. Se ha dicho que la práctica habitual es partir de una imagen base sobre la que se prepara la funcionalidad concreta deseada. Para algunos despliegues sería conveniente, a su vez, disponer de contenedores independientes pero que pudiesen ser lanzados de manera conjunta. No se ha mencionado hasta ahora la [comunicación](https://docs.docker.com/network/) entre contenedores porque en Azure, es más conveniente y simple lanzar un contenedor con diversos contenedores dentro que varios contenedores independientes y que se comuniquen entre ellos. La herramienta que permite la definición y ejecución de múltiples contenedores Docker se conoce como [Docker compose](https://github.com/docker/compose/). El funcionamiento básico se compone de los tres pasos siguientes:
+
+* Dockerfile
+* Definición de los servicios en el fichero `docker-compose.yml`. De esta forma pueden ejecutarse juntos en un entorno aislado
+* Ejecutar el comando `$ docker-compose up`
+
+`Docker-compose` no es un Dockerfile supervitaminado. Es necesario que los contenedores se generen y se publiquen con su propio Dockerfile. Lo que `Docker-compose` sí hace por nosotros es gestionar la configuración y el despliegue de múltiples contenedores desde un único fichero. Las diferentes secciones que se definen en el fichero son principalmente las siguientes:
+
+**version** la sintaxis del documento va cambiando con el tiempo por lo que lo primero que se debe hacer es indicar la versión concreta de la sintaxis que se va a utilizar, más [info](https://docs.docker.com/compose/compose-file/).
+
+**services** lo siguiente que aparece es una lista de servicios. a cada uno de los servicios se le debe asignar un nombre.
+
+La documentación de `Docker-compose` es muy completa y puede obtenerse una descripción más completa [aquí](https://docs.docker.com/compose/compose-file/#service-configuration-reference). De todas formas, se dará una perspectiva general de aquellas etiquetas más comunes.
+
+**image** se puede especificar la imagen y versión de partida del servicio, incluso se puede usar el IMAGE ID aunque es mucho menos intutitivo. Si la imagen no existe en local, `Docker-compose` trata de descargarla del repositorio público excepto si se ha especificado la etiqueta build.
+
+**build** se pueden especificar los parámetros utilizados a la hora de construir el contenedor. El parámetro build es una cadena de texto que especifica la ruta al contexto de construcción. Si se ha especificado tanto build como image, `Docker-compose` trata de construir la imagen asignando el nombre del service a la imagen y el tag. Se puede especificar `context`, `dockerfile` y `args`.
+
+**args** argumentos en tiempo de construcción que son variables de entorno. 
+
+**depends_on** se utiliza para fijar una dependencia entre servicios del `Docker-compose`.
+
+**ports** los puertos que se exponen. "puerto1:puerto2" donde puerto1 es el puerto que se expone al exterior del contenedor y el puerto2 es el puerto del contenedor. Por ejemplo "8000:80" está exponiendo el puerto 80 como el 8000. Internamente los puertos estarán abiertos y direccionados en función de la imagen.
+
+**expose** expone puertos sin publicarlos al exterior, serán accesibles solamente a través de servicios conectados.
+
+**restart** la política por defecto es que un contenedor no se reinicie bajo ninguna circunstancia. Existen diferentes flags que se puede utilizar: no, always, on-failure o unless-stopped.
+
+**environment** se pueden añadir diferentes variables de entorno
+
+**volumes** hay dos formas de declarar volúmenes en Docker: desde el cliente o desde el fichero Dockerfile/Docker-compose. Se puede disponer de un servicio que haga uso de una volumen del host, la sintaxis sería: `/path/host:/path/container. Un Docker-compose puede tener un volumen con nombre que por defecto es interno aunque se puede mostrar al exterior. El alcance se limita al propio Docker-compose, por ejemplo:
+
+```{bash eval=F}
+version '3'
+
+volumes:
+  db_web:
+
+services:
+  mi_servicio:
+    ...
+    volumes:
+      - db_web:/path/contenedor
+
+```
+
+Es posible crear volúmenes con nombre externos pero han de ser creados por el usuario mediante el comando _docker volume create_ por ejemplo con `--driver local` se especifica el nombre del driver, en este caso hay diferencias en `local` si se trata de una máquina host Windows o Linux. Suponiendo una máquina Linux `local` acepta opciones de forma similar a cómo lo hace el comando `mount`, más información [aquí](https://man7.org/linux/man-pages/man8/mount.8.html). De forma general el tipo `none` indica que no hay partición física de disco, se trata de un sistema de ficheros virtual; se indica con `device` el sistema de ficheros local que se quiere montar; `o` se usa para pasar diferentes opciones, en este caso `bind` para remontar la estructura de ficheros en otra parte:
+
+```{bash eval=F}
+docker volume create --driver local \
+    --opt type=none \
+    --opt device=/var/opt/mi_web \
+    --opt o=bind db_web
+```
+
+sería necesario indicar en el fichero `Docker-compose` que se trata de un volumen externo:
+
+```{bash eval=F}
+version '3'
+
+volumes:
+  db_web:
+    external: true
+
+services:
+  mi_servicio:
+    ...
+    volumes:
+      - db_web:/path/contenedor
+
+```
+
+**healthcheck** se puede añadir una verificación de que todo el despliegue parece está `saludable`, más información [aquí](https://docs.docker.com/engine/reference/builder/#healthcheck). En este caso un check que nos proponen para verificar a intervalos que la web es alcanzable.
+
+```{bash eval=F}
+...
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost"]
+  interval: 1m30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s
+...
+```
+
 
 # Referencias
 
-https://linuxize.com/post/how-to-install-and-use-docker-on-ubuntu-18-04/
+En caso de querer ampliar el curso o consultar alguna de la información utilizada para el desarrollo del mismo se pueden visitar alguno de los enlaces que aparecen a lo largo del texto del curso o los siguientes enlaces.
 
-https://azure.microsoft.com/en-us/services/kubernetes-service/docker/
+* https://linuxize.com/post/how-to-install-and-use-docker-on-ubuntu-18-04/
 
-https://docs.docker.com/get-started/part2/
+* https://azure.microsoft.com/en-us/services/kubernetes-service/docker/
 
-https://www.docker.com/get-started
+* https://docs.docker.com/get-started/part2/
 
-https://linuxize.com/post/how-to-build-docker-images-with-dockerfile/
+* https://www.docker.com/get-started
 
-https://www.josedomingo.org/pledin/2016/02/dockerfile-creacion-de-imagenes-docker/
+* https://linuxize.com/post/how-to-build-docker-images-with-dockerfile/
 
-https://blog.payara.fish/deploy-docker-containers-on-azure
+* https://www.josedomingo.org/pledin/2016/02/dockerfile-creacion-de-imagenes-docker/
 
-https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-authentication#service-principal
+* https://blog.payara.fish/deploy-docker-containers-on-azure
 
-https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-get-started-docker-cli
+* https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-authentication#service-principal
+
+* https://docs.microsoft.com/bs-latn-ba/azure/container-registry/container-registry-get-started-docker-cli
+
+* https://www.cloudsavvyit.com/7446/what-is-docker-compose-and-how-do-you-use-it/
