@@ -135,6 +135,22 @@ En el ejemplo anterior se parte de una imagen de Node.js en su versión 6.11.5 d
 
 Construye y prueba tu primera imagen Docker para comprobar que la instalación es correcta.
 
+En una máquina Linux es recomendable usar `docker` sin permisos de root Por defecto, el demonio de `docker` crea un socket de Unix que pertenece al usuario root y otros usuarios deben acceder vía `sudo`.
+
+Para usar `docker` sin privilegios de root, primero se debe crear un un nuevo grupo:
+
+```{bash, eval=F}
+$ sudo groupadd docker
+```
+
+y añadir al usuario:
+
+```{bash, eval=F}
+$ sudo usermod -aG docker $USER
+```
+
+es recomendable reiniciar el equipo o, al menos, salir de la sesión del usuario y volver a entrar. Se pueden forzar los cambios con `$ newgrp docker`. Más información acerca de posibles errores o pasos post-instalación de `Docker` en Linux en el siguiente [enlace](https://docs.docker.com/engine/install/linux-postinstall/).
+
 ## Docker service
 
 Verifica que el demonio de docker está corriendo en el sistema y que no haya ningún problema:
@@ -678,7 +694,7 @@ Lo primero que hay que hacer es darse de alta en Azure, para ello debéis visita
 
 Como podéis ver, dispondréis de una crédito de 170€. Además, 12 meses de servicios populares gratuitos y siempre gratis, más de 25 servicios.
 
-En mi caso, en la pantalla de Login, he creado una nueva cuenta.
+**IMPORTANTE** Es necesario crear una nueva cuenta y no usar la cuenta de la Universidad. En caso de usar la cuenta de la UDC dará error por el servidor de dominio al no poder asegurar, con los permisos base que tenemos en la cuenta corporativa, acceso a Azure. _Recomendación_: crear una nueva cuenta de correo dominio @outlook.com y poner un nombre a la cuenta del tipo ics2021.nombre.apellidos
 
 <img src="images/login.png" alt="Cread la cuenta gratuita de Azure." width="90%">
 
